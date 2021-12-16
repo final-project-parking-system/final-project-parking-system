@@ -12,9 +12,6 @@ public class Admin{
     private String username ;
     private String password ;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
     public Admin() {
     }
 

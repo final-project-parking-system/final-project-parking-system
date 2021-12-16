@@ -36,10 +36,7 @@ public class ParkingController {
         parkingService.deleteParking(id);
 
     }
-    @PutMapping
-    public Parking updateNumSlotIstake(Parking parking,int num){
-        return parkingService.updateNumSlotIstake(parking,num);
-    }
+
 
 
 }

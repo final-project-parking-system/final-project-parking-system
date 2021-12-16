@@ -1,7 +1,7 @@
 package com.example.parkingSystem.User;
 
 
-import com.example.parkingSystem.Parking.Parking;
+import com.example.parkingSystem.Email.EmailSenderService;
 import com.example.parkingSystem.Parking.ParkingController;
 import com.example.parkingSystem.Spot.Spot;
 import com.example.parkingSystem.Spot.SpotRepository;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-
+    private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final TicketController ticketController;
     private final SpotRepository spotRepository;
@@ -23,7 +23,8 @@ public class UserService {
     private final TicketRepository ticketRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, TicketController ticketController, SpotRepository spotRepository, SpotController spotController, ParkingController parkingController, TicketRepository ticketRepository) {
+    public UserService(EmailSenderService emailSenderService, UserRepository userRepository, TicketController ticketController, SpotRepository spotRepository, SpotController spotController, ParkingController parkingController, TicketRepository ticketRepository) {
+        this.emailSenderService = emailSenderService;
         this.userRepository = userRepository;
         this.ticketController = ticketController;
         this.spotRepository = spotRepository;
@@ -40,43 +41,40 @@ public class UserService {
     public User getUser(String email) {
         return userRepository.findByEmail(email);
     }
-//    public User updateTicket(String id) {
-//        Long user_id = Long.parseLong(id);
-//        return userRepository.findById(user_id).orElse(null);
+
+
+
+
+//    public void registerByAdmin(User user ,String slotType) {
+//        Spot spot = spotController.getAvailableSpot(slotType);
+//        System.out.println(spot.getId());
+//            userRepository.save(user);
+//            userRepository.insertSpotinUser(user.getId(),spot.getId());
+//            spotController.updateTaking(spot);
+//            ticketController.addTicket(user);
+//            emailSenderService.sendSimpleEmail(user.getEmail(),"floor name"+spot.getParking().getName(), "you");
+//
 //    }
-    public void sendEmailToAvailable() {
-        User user = new User();
-        if (user.isWaiting() == true) {
-            Parking parking = new Parking();
-            if (parking.getNumAllSlot() != parking.getNumSlotIstake()) {
-                //send message
-            } else {
-                //null
-            }
-        }else System.out.println("no user waiting");
-    }
-    public void registerByAdmin(User user) {
-        Long spotId = user.getSpot().getId();
-        Spot spot = spotRepository.getById(spotId);
-        spotController.updateTaking(spot);
-        parkingController.updateNumSlotIstake(spot.getParking(),1);
-        if (spot != null) {
-            user.setSpot(spot);
-            userRepository.save(user);
-            ticketController.addTicket(user);
-        }
-    }
     public User registerByUser(User user) {
-        Long spotId = user.getSpot().getId();
-        Spot spot = spotRepository.getById(spotId);
-        spotController.updateTaking(spot);
-        parkingController.updateNumSlotIstake(spot.getParking(),1);
-        if (spot != null) {
-            user.setSpot(spot);
+        System.out.println(user.toString());
             return userRepository.save(user);
-        }else
-            return null;
-    }
+         }
+
+     public void selectSpot(String userid,String spotid)   {
+         Long user_id = Long.parseLong(userid);
+         Long spot_id = Long.parseLong(spotid);
+         Spot spot = spotRepository.getById(spot_id);
+         User user=userRepository.getById(user_id);
+         userRepository.insertSpotinUser(user_id,spot_id);
+         spotController.updateTaking(spot);
+//         ticketController.addTicket(user,spot);
+         emailSenderService.sendSimpleEmail(
+                 user.getEmail(),
+                 "Parking has been booked successfully ",
+                 user.getfName()+" , We parking System team ");
+
+     }
+
 
     public User logInUser(User data){
         User user= userRepository.findByEmail(data.getEmail());
@@ -86,9 +84,18 @@ public class UserService {
             return null ;
     }
 
-//    public void deleteUserSpot(String userSpot) {
-//         userRepository.deleteBySpotOnUser(userSpot);
-//    }
+    public void deleteUserSpot(String userid,String spotid) {//تصير الحاله في التكت consel
+        Long user_id = Long.parseLong(userid);
+        Long spot_id = Long.parseLong(spotid);
+        Spot spot = spotRepository.getById(spot_id);
+        User user=userRepository.getById(user_id);
+         userRepository.deleteBySpotOnUser(user_id,spot_id);
+        spotController.updateTaking(spot);
+        emailSenderService.sendSimpleEmail(
+                user.getEmail(),
+                "Parking has been unbooked successfully ",
+                user.getfName()+" , We parking System team ");
+    }
 
 
     public void updateUser(User data) {
@@ -100,6 +107,5 @@ public class UserService {
         user.setfName(data.getfName());
         user.setPassword(data.getPassword());
         user.setPhone(data.getPhone());
-        user.setSpot(data.getSpot());
     }
 }

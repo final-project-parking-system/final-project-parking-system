@@ -2,46 +2,52 @@ package com.example.parkingSystem.Spot;
 
 import com.example.parkingSystem.Parking.Parking;
 import com.example.parkingSystem.Ticket.Ticket;
-import com.example.parkingSystem.User.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "spot")
 public class Spot {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String slot_type;
-    private Instant expected_date;
     private boolean taking ;
 
     @ManyToOne (fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name ="parking_id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Parking parking;
-
-    @OneToMany(mappedBy="spot")
-    private List<User> users;
-
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
+    private List<Ticket> tickets;
 
     public Spot() {
 
     }
 
-    public Spot(Long id, String slot_type, Instant expected_date, boolean taking, Parking parking, List<User> users) {
+    public Spot(Long id, String slot_type,  boolean taking, Parking parking, List<Ticket> tickets) {
         this.id = id;
         this.slot_type = slot_type;
-        this.expected_date = expected_date;
         this.taking = taking;
         this.parking = parking;
-        this.users = users;
+        this.tickets = tickets;
     }
 
+    public Boolean hasTickets(){
+        System.out.println("size >>>>"+ this.getId() + ":" +this.tickets.size());
+        return this.tickets.size() != 0;
+    }
     public Long getId() {
         return id;
     }
@@ -56,14 +62,6 @@ public class Spot {
 
     public void setSlot_type(String slot_type) {
         this.slot_type = slot_type;
-    }
-
-    public Instant getExpected_date() {
-        return expected_date;
-    }
-
-    public void setExpected_date(Instant expected_date) {
-        this.expected_date = expected_date;
     }
 
     public boolean isTaking() {
@@ -82,12 +80,12 @@ public class Spot {
         this.parking = parking;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override
@@ -95,10 +93,7 @@ public class Spot {
         return "Spot{" +
                 "id=" + id +
                 ", slot_type='" + slot_type + '\'' +
-                ", expected_date=" + expected_date +
                 ", taking=" + taking +
-                ", parking=" + parking +
-                ", users=" + users +
                 '}';
     }
 }

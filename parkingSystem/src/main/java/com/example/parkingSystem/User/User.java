@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fName;
     private String lName;
@@ -25,12 +26,8 @@ public class User {
     private String password;
     @Column(unique = true)
     private Long phone ;
-    private boolean waiting ;
 
 
-    @ManyToOne
-    @JoinColumn(name="spot_id", nullable=false)
-    private Spot spot;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -38,7 +35,8 @@ public class User {
     }
 
 
-    public User(Long id, String fName, String lName, String carName, String carModel, String platNumber, String email, String password, Long phone, boolean waiting, Spot spot) {
+    public User(Long id, String fName, String lName, String carName, String carModel,
+                String platNumber, String email, String password, Long phone, List<Ticket> tickets) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -48,8 +46,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.waiting = waiting;
-        this.spot = spot;
+        this.tickets = tickets;
     }
 
     public Long getId() {
@@ -124,21 +121,14 @@ public class User {
         this.phone = phone;
     }
 
-    public Spot getSpot() {
-        return spot;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setSpot(Spot spot) {
-        this.spot = spot;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
-    public boolean isWaiting() {
-        return waiting;
-    }
-
-    public void setWaiting(boolean waiting) {
-        this.waiting = waiting;
-    }
 
     @Override
     public String toString() {
@@ -152,8 +142,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone=" + phone +
-                ", waiting=" + waiting +
-                ", spot=" + spot +
+                ", tickets=" + tickets +
                 '}';
     }
 }

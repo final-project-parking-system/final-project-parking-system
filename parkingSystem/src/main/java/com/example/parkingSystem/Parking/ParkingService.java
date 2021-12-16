@@ -34,18 +34,6 @@ public class ParkingService {
 
     }
 
-    public Parking updateNumSlotIstake(Parking parking, int num) {
-        if (parking.getNumSlotIstake()!= parking.getNumAllSlot()){
-            if (num == 1) {
-                parking.setNumSlotIstake(parking.getNumSlotIstake() + 1);
-               return parkingRepository.save(parking);
-            }else return null;} //send message to withing user
-        if (num != 1) {
-                parking.setNumSlotIstake(parking.getNumSlotIstake() - 1);
-                return parkingRepository.save(parking);
-            }else
-                return null;
-    }
 
 }
 

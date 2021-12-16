@@ -1,6 +1,7 @@
 package com.example.parkingSystem.Parking;
 
 import com.example.parkingSystem.Spot.Spot;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,23 +11,21 @@ import java.util.List;
 @Table(name = "parking")
 public class Parking {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private  int numAllSlot;//عدد المواقف في البارك
-    private  int numSlotIstake;//كم موقف تم اخذه
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parking")
     private List<Spot> spots = new ArrayList<>();
 
     public Parking() {
     }
 
-    public Parking(Long id, String name, int numAllSlot, int numSlotIstake, List<Spot> spots) {
+    public Parking(Long id, String name, int numAllSlot, List<Spot> spots) {
         this.id = id;
         this.name = name;
         this.numAllSlot = numAllSlot;
-        this.numSlotIstake = numSlotIstake;
         this.spots = spots;
     }
 
@@ -54,14 +53,6 @@ public class Parking {
         this.numAllSlot = numAllSlot;
     }
 
-    public int getNumSlotIstake() {
-        return numSlotIstake;
-    }
-
-    public void setNumSlotIstake(int numSlotIstake) {
-        this.numSlotIstake = numSlotIstake;
-    }
-
     public List<Spot> getSpots() {
         return spots;
     }
@@ -76,7 +67,6 @@ public class Parking {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", numAllSlot=" + numAllSlot +
-                ", numSlotIstake=" + numSlotIstake +
                 ", spots=" + spots +
                 '}';
     }
