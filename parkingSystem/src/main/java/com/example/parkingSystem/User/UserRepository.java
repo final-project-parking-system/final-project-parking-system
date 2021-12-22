@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 @Transactional
      void insertSpotinUser(@Param("userId")Long user_id,@Param("spotId")Long spot_id);
 
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM user_spot where user_id= ?1 and spot_id = ?2 ; ", nativeQuery = true)
-      void deleteBySpotOnUser(Long user_id,Long spot_id );
+//    @Modifying
+//    @Transactional
+//    @Query(value = "DELETE FROM user_spot where user_id= ?1 and spot_id = ?2 ; ", nativeQuery = true)
+//      void deleteBySpotOnUser(Long user_id,Long spot_id );
 }

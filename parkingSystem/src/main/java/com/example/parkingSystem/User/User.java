@@ -1,12 +1,9 @@
 package com.example.parkingSystem.User;
 
-import com.example.parkingSystem.Spot.Spot;
 import com.example.parkingSystem.Ticket.Ticket;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -27,13 +24,11 @@ public class User {
     @Column(unique = true)
     private Long phone ;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Ticket> tickets = new ArrayList<>();
-
+    @JsonIgnoreProperties("user")
+    private List<Ticket> tickets;
     public User() {
     }
-
 
     public User(Long id, String fName, String lName, String carName, String carModel,
                 String platNumber, String email, String password, Long phone, List<Ticket> tickets) {
@@ -129,7 +124,6 @@ public class User {
         this.tickets = tickets;
     }
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -142,7 +136,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone=" + phone +
-                ", tickets=" + tickets +
+//                ", tickets=" + tickets +
                 '}';
     }
 }

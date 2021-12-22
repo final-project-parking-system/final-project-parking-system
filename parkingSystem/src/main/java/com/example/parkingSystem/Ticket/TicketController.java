@@ -22,48 +22,35 @@ public class TicketController {
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
-    @GetMapping
+    @GetMapping("/all")
     public List<Ticket> getTickets(){
         return ticketService.getTickets();
     }
 
-    @PostMapping
-    public Ticket addTicket(User user,Spot spot){
-        return ticketService.addTicket(user,spot);
+    @PostMapping("/{user_id}/{spot_id}/{startDate}/{endDate}")
+    public Ticket addTicket(@PathVariable String user_id ,@PathVariable String spot_id ,@PathVariable String startDate ,@PathVariable String endDate ){
+        System.out.println("i'm hear ");
+        return ticketService.addTicket(user_id,spot_id,startDate,endDate);
+    }
+    @PutMapping("/{user_id}/{status}/{startDate}/{endDate}")
+    public void entryConfirmation(@PathVariable String user_id ,@PathVariable String status ,@PathVariable String startDate ,@PathVariable String endDate ){
+         ticketService.entryConfirmation(user_id,status,startDate,endDate);
     }
 
-//    @PostMapping("/registerByCar")
-//    public Ticket addTicketInUser(@RequestBody User user){
-//        return ticketService.addTicketInUser(user);
+//    @GetMapping("/{PhoneNum}")
+//    public Ticket getTicket(@PahVariable String PhoneNum){
+//        return ticketService.getTicket(PhoneNum);
+//
 //    }
-    @GetMapping("/{platNum}")
-    public Ticket getTicket(@PathVariable String platNum){
-        return ticketService.getTicket(platNum);
-
+    @GetMapping
+    public void deleteBookingAutomatically(){
+        System.out.println("hi");
+         ticketService.deleteBookingAutomatically();
     }
-    @DeleteMapping("/{id}")
-    public void deleteTicket(@PathVariable String id){
-        ticketService.deleteTicket(id);
+    @PutMapping("/delete")
+    public void deleteTicket(){
+        ticketService.deleteTicket();
 
-    }
-
-    @PutMapping("/{plate_num}")
-    public void updateTicket(@PathVariable String phone_num){
-        ticketService.updateTicket(phone_num);
-    }
-    @GetMapping("/now")
-    public Instant nowD(){
-        return Instant.now();
-    }
-
-    @PutMapping("/date/{user_id}/{spot_id}")
-    public Ticket extendDate(@PathVariable String user_id,@PathVariable String spot_id,
-                           @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDay,
-                           @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDay){
-        System.out.println(startDay);
-        System.out.println(spot_id);
-        System.out.println(user_id);
-        return  ticketService.extendDate(user_id,spot_id,startDay,endDay);
     }
 
 }
