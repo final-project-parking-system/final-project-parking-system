@@ -77,7 +77,7 @@ public class TicketService {
 
     }
 
-//delete Booking Automatically when end of the specified date
+//delete Booking Automatically when end of the current date
     public void deleteBookingAutomatically(){// لم تزبط معنا
         List <Ticket> tickets = ticketRepository.findAll();
         Date currentSqlDate = new Date(System.currentTimeMillis());
@@ -85,7 +85,7 @@ public class TicketService {
             System.out.println(i.toString());
             if (i.getStatus().equalsIgnoreCase("waiting") ){
                 System.out.println(i.getStatus());
-                if (i.getStartTime().before(currentSqlDate)){
+                if (i.getEndTime().before(currentSqlDate)){
                     User user =i.getUser();
                     System.out.println(i.getStartTime().before(currentSqlDate));
                     i.setStatus("cancelled");
@@ -99,9 +99,7 @@ public class TicketService {
 
         }
     }
-    public void deleteTicket( ){
 
-    }
     //entry Confirmation by QR code
     public void entryConfirmation(String userId , String stastus , String startDate, String endDate){
         Long user_Id = Long.parseLong(userId);
@@ -124,6 +122,20 @@ public class TicketService {
                 emailSenderService.sendSimpleEmail(user.getEmail(),"Vehicle entry has been confirmed"+i.getStartTime(),"Parking teem ");
             }
         }
+    }
+        // AAdmin check the car is exit the parking
+        public Ticket exitCar(User user) {
+        Long phone_num= user.getPhone();
+        System.out.println(phone_num);
+        if (phone_num!=null){
+            System.out.println(ticketRepository.findTicketByPhone_num(phone_num).toString());
+            Ticket ticket =ticketRepository.findTicketByPhone_num(phone_num);
+            if (ticket.getStatus().equals("Enter")){
+                ticket.setStatus("done");
+                return ticketRepository.save(ticket);
+            }
+        }
+        return  null ;
     }
 
 

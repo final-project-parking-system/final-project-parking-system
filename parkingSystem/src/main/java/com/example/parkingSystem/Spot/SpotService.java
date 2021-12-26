@@ -57,7 +57,9 @@ public class SpotService {
     }
 
     Boolean dateWithinTicketDate(Ticket t, Date startDay , Date endDay){
-        return !(t.getStartTime().before(startDay)&&(t.getStartTime().before(endDay))
+        Date currentSqlDate = new Date(System.currentTimeMillis());
+        return !((t.getEndTime().before(currentSqlDate)) || t.getStartTime().before(startDay)
+                && (t.getStartTime().before(endDay))
             || (t.getEndTime().after(startDay) && t.getEndTime().after(endDay)));
     }
 

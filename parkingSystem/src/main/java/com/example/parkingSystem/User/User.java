@@ -1,9 +1,11 @@
 package com.example.parkingSystem.User;
 
+import com.example.parkingSystem.Role.Role;
 import com.example.parkingSystem.Ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,14 +26,16 @@ public class User {
     @Column(unique = true)
     private Long phone ;
 
+    @ManyToMany(fetch =FetchType.EAGER)
+    private List<Role>roles=new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnoreProperties("user")
     private List<Ticket> tickets;
     public User() {
     }
 
-    public User(Long id, String fName, String lName, String carName, String carModel,
-                String platNumber, String email, String password, Long phone, List<Ticket> tickets) {
+    public User(Long id, String fName, String lName, String carName, String carModel, String platNumber, String email, String password, Long phone, List<Role> roles, List<Ticket> tickets) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -41,6 +45,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.roles = roles;
         this.tickets = tickets;
     }
 
@@ -122,6 +127,14 @@ public class User {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

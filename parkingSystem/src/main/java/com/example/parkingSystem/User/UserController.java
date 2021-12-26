@@ -20,18 +20,13 @@ public class UserController {
     public List<User> getUsers(){return userService.getUsers();}
 
     @GetMapping("/find-user-by-email")
-    public User getUser(@RequestBody String email){
-        return userService.getUser(email);
-    }
-
-    @PostMapping("/LogIn-user")
-    public User logInUser(User data){
-        return userService.logInUser(data);
+    public User getUserByEmail(@RequestBody User user){
+        return userService.getUserByEmail(user);
     }
 
     @PostMapping("/register-By-User")
-    public User registerByUser(@RequestBody User user){
-        return userService.registerByUser(user);
+    public User registerByUser(@RequestBody Form form){
+        return userService.registerByUser(form);
     }
 
     @PutMapping("/update-info/{id}")
@@ -39,4 +34,16 @@ public class UserController {
          return userService.updateUser(id,user);
     }
 
+}
+class Form {
+    private User user;
+    private Long role_id;
+
+    public User getUser() {
+        return user;
+    }
+
+    public Long getRole_id() {
+        return role_id;
+    }
 }
