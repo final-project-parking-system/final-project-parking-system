@@ -3,6 +3,9 @@ package com.example.parkingSystem.Spot;
 import com.example.parkingSystem.Ticket.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -27,10 +30,12 @@ public class SpotController {
     public Spot addSpot(@RequestBody Spot spot){
         return SpotService.addSpot(spot);
     }
-    @GetMapping
-    public List<Spot> findAvailableSpot( @RequestBody Ticket ticket){
-        System.out.println(ticket);
-        List <Spot> s= SpotService.findAvailableSpot(ticket);
+    @GetMapping("/{startDate}/{emdDate}")
+    public List<Spot> findAvailableSpot(@PathVariable String startDate ,@PathVariable String  emdDate) throws ParseException {
+        /////////////////////////// added ex here
+
+
+        List <Spot> s= SpotService.findAvailableSpot(startDate , emdDate );
         System.out.println(s);
        return s;
     }

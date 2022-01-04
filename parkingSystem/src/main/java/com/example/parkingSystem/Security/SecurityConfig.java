@@ -43,19 +43,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),userRepository);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
+        http.cors().and().csrf().disable();
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("*"));
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;});
-        http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Define the authorization patterns below
 //        http.authorizeRequests().anyRequest().permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/login").permitAll();
-        http.authorizeRequests().antMatchers( HttpMethod.POST,"/users").hasAnyAuthority("users_roles");
-//        http.authorizeRequests().anyRequest().authenticated();
+//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/login").permitAll();
+        http.authorizeRequests().antMatchers("/users/**").permitAll();
+        http.authorizeRequests().antMatchers("/roles").permitAll();
+        http.authorizeRequests().antMatchers("/spot/**").permitAll();
+        http.authorizeRequests().antMatchers("/ticket/**").permitAll();
+
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

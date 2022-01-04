@@ -59,9 +59,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         com.example.parkingSystem.User.User dbUser = userRepository.findByEmail(user.getUsername());
         Map<String, String> payload = new HashMap<>();
         payload.put("id", dbUser.getId().toString());
+
         Algorithm algorithm = Algorithm.HMAC256("jwt_super_secret".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
+                .withPayload(payload)
                 .withExpiresAt(new Date(System.currentTimeMillis() + 480 * 60 * 1000))
                 .withIssuer(request.getRequestURI().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))

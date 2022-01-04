@@ -3,6 +3,8 @@ package com.example.parkingSystem.Ticket;
 import com.example.parkingSystem.Spot.Spot;
 import com.example.parkingSystem.User.User;
 import com.fasterxml.jackson.annotation.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -13,8 +15,8 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Date startTime;
-    private Date endTime;
+    private LocalDate startTime;
+    private LocalDate  endTime;
     private String status;
     private double price;
     private boolean waiting ;//extra thing ...
@@ -31,7 +33,7 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(long id, Date startTime, Date endTime, String status, double price, boolean waiting, Spot spot ,User user) {
+    public Ticket(long id, LocalDate startTime, LocalDate endTime, String status, double price, boolean waiting, Spot spot ,User user) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -59,20 +61,19 @@ public class Ticket {
         this.user = user;
     }
 
-    public Date getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public Date
-    getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 

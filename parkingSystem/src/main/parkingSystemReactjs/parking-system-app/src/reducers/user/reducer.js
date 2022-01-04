@@ -9,12 +9,14 @@ const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case "ADD_USER":
       localStorage.setItem("user", JSON.stringify(payload));
+      console.log(payload);
       return {
         user: payload,
         token: state.token
       };
     case "ADD_TOKEN":
       localStorage.setItem("token", JSON.stringify(payload));
+      console.log(payload);
       return {
         user: state.user,
         token: payload,

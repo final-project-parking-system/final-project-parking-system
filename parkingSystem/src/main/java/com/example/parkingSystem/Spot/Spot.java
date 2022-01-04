@@ -14,7 +14,7 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String slot_type;
-
+    private boolean available;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
     @JsonIgnore
     private List<Ticket> tickets;
@@ -55,6 +55,14 @@ public class Spot {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override

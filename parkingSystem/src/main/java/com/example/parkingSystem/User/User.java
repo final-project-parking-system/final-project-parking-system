@@ -149,7 +149,9 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone=" + phone +
+                ", roles=" + roles +
 //                ", tickets=" + tickets +
                 '}';
     }
 }
+

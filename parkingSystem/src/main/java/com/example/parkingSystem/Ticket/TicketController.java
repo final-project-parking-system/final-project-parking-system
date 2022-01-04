@@ -30,7 +30,8 @@ public class TicketController {
 
     @PutMapping("/{user_id}/{status}/{startDate}/{endDate}")
     public void entryConfirmation(@PathVariable String user_id ,@PathVariable String status ,@PathVariable String startDate ,@PathVariable String endDate ){
-         ticketService.entryConfirmation(user_id,status,startDate,endDate);
+        System.out.println("hi");
+        ticketService.entryConfirmation(user_id,status,startDate,endDate);
     }
 
     @GetMapping

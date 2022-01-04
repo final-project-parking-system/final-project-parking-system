@@ -1,24 +1,24 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate, Navigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addUser, addToken } from "../reducers/user/actions";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-function Login() {
 
+function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-//   const state = useSelector((state) => {
-//     return {
-//       user: state.userReducer.user,
-//     };
-//   });
+  const state = useSelector((state) => {
+    return {
+      user: state.userReducer.user,
+    };
+  });
 
   const handleChangeEmail = (e) => {
       console.log(e.target.value);
@@ -28,10 +28,12 @@ function Login() {
     console.log(e.target.value);
     setPassword(e.target.value);
   };
-  const AddData = () => {
+  const AddData = (e) => {
+    e.preventDefault()
     const data = {
       email,
       password,
+     
     };
     console.log(data);
 
@@ -51,7 +53,15 @@ function Login() {
 
         dispatch(user_action);
         dispatch(token_action);
-        navigate("/");
+        if (decoded.roles[0]=="USER") {
+           navigate("/Home");
+        } else if (decoded.roles[0]=="ADMIN") {
+          navigate("/Admin");
+        }else{
+          console.log("undfinde");
+          
+        }
+       
       })
       .catch((error) => {
         console.log(error);
@@ -60,7 +70,6 @@ function Login() {
 
   return (
     <>
-      {/* {!state.user.id ? ( */}
         <form>
           <h3>Sign In</h3>
 
@@ -103,9 +112,7 @@ function Login() {
 
      
      </> 
-    //  ) : (
-    //     <Navigate to="/" from={{ from: location }} />
-    //   )};
+   
   );
 }
 

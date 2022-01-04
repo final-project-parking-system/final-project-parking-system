@@ -3,8 +3,8 @@ package com.example.parkingSystem.Spot;
 import com.example.parkingSystem.Ticket.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Date;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,28 +21,27 @@ public class SpotService {
     }
 
 
-    public List <Spot> findAvailableSpot(Ticket ticket){
-        Date startDate =ticket.getStartTime();
-        Date endDate = ticket.getEndTime();
+    public List <Spot> findAvailableSpot(String start_day, String end_day) throws ParseException {
+        LocalDate startDate = LocalDate.parse(start_day);
+        LocalDate endDate = LocalDate.parse(end_day);
         List<Spot> allSpots = spotRepository.findAll();
-        List<Spot> availableSpots = new ArrayList<>();
         for (Spot s: allSpots){
             if (s.hasTickets()){
                 if (checkAvailability(s,startDate,endDate) != null){
-                    System.out.println("00000");
-                    availableSpots.add(s);
+                    s.setAvailable(true);
+                }
+                else {
+                    s.setAvailable(false);
                 }
             }
             else{
-                availableSpots.add(s);
-                System.out.println("11111");
+                s.setAvailable(true);
             }
         }
-        System.out.println("22222");
-        return availableSpots;
+        return allSpots;
     }
 
-    Spot checkAvailability(Spot s ,Date startDate , Date endDate){
+    Spot checkAvailability(Spot s , LocalDate startDate , LocalDate endDate) throws ParseException {
         boolean flag = true;
         List <Ticket> tickets= s.getTickets();
         for (Ticket i : tickets){
@@ -56,15 +55,15 @@ public class SpotService {
         return null;
     }
 
-    Boolean dateWithinTicketDate(Ticket t, Date startDay , Date endDay){
-        Date currentSqlDate = new Date(System.currentTimeMillis());
-        return !((t.getEndTime().before(currentSqlDate)) || t.getStartTime().before(startDay)
-                && (t.getStartTime().before(endDay))
-            || (t.getEndTime().after(startDay) && t.getEndTime().after(endDay)));
+    Boolean dateWithinTicketDate(Ticket t, LocalDate startDay , LocalDate endDay) throws ParseException {
+        return !(t.getStartTime().isBefore(startDay)
+                && (t.getStartTime().isBefore(endDay))
+                || (t.getEndTime().isAfter(startDay)
+                && t.getEndTime().isAfter(endDay))
+                || t.getStatus().equals("cancelled"));
     }
 
     public Spot addSpot(Spot spot) {
-        System.out.println(spot.toString());
         return spotRepository.save(spot);
     }
 
