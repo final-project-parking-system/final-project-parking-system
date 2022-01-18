@@ -1,50 +1,114 @@
-import React from 'react'
-import { useParams ,useNavigate} from 'react-router-dom';
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Home from "./Home";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Navigate, useParams } from "react-router-dom";
+import Booking from "./Booking";
+import slotImg from "../image/avarbile.png";
+import car from "../image/car.png";
+import Navbar from "./Navbar";
+import "../spot.css";
 
-function Spot({Spot_id}) {
-    const navigate = useNavigate();
-  const {spoy_id} = useParams()
-  const {startDate} = useParams()
-  const {endDate} = useParams()
+function Spot() {
+  const navigate = useNavigate();
+  const today = new Date().toJSON().split("T")[0];
+  const { startDateInParams } = useParams();
+  const { endDateInParams } = useParams();
+  const [startDate, setStart] = useState(startDateInParams);
+  const [endDate, setEnd] = useState(endDateInParams);
+  const [spot, setSpot] = useState([]);
+  const [slot, setslot] = useState(0);
 
-    const spotId=spoy_id;
-    const state = useSelector((state) => {
-        return {
-          user: state.userReducer.user,
-          
-        };
-      });
-      console.log(state);
-      let userId= state.user.id
-      if (userId!==undefined){
-            axios
-              .post(`http://localhost:8080/ticket/${userId}/${spotId}/${startDate}/${endDate}`)
-              .then((response) => {
-                console.log(response.data);
-              })
-              .catch((error) => {
-                console.log(error);
-              });}
-              else {
-                navigate('/login')
-              }
-            
-      
- 
+  const handleChangeStartDate = (e) => {
+    setStart(e.target.value);
+  };
+  const handleChangeEndDate = (e) => {
+    setEnd(e.target.value);
+  };
+  const send = () => {
+    axios
+      .get(`http://localhost:8080/spot/${startDate}/${endDate}/`)
+      .then((response) => {
+        setSpot(response.data);
+      })
+      .catch((error) => {});
+  };
+  const getValue = (Spot_id) => {
+    //  <Booking Spot_id={Spot_id}/>
+    //  navigate(`/Booking/${Spot_id}/${startDate}/${endDate}`);
+    setslot(Spot_id);
+  };
+  const go = () => {
+    navigate(`/Booking/${slot}/${startDate}/${endDate}`);
+  };
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/spot/${startDate}/${endDate}/`)
+      .then((response) => {
+        setSpot(response.data);
+      })
+      .catch((error) => {});
+  }, []);
 
-    return (
-        <div>
-            <h1>hhhh</h1>
-            {Spot_id}
-        { console.log(spotId +""+state.user.id+""+startDate+""+endDate)}
-            <button onClick={()=>navigate("/Home")}>back</button>
+  return (
+    <div className="contener">
+      <Navbar />
+      <div className="inputStyleInSpot">
+        <input
+          type="date"
+          value={startDate}
+          className="dateRange"
+          onChange={handleChangeStartDate}
+        />
+        <input
+          type="date"
+          value={endDate}
+          className="dateRange"
+          onChange={handleChangeEndDate}
+        />
+        <button className="button-45" onClick={send}>
+          SUBMIT
+        </button>
+      </div>
+
+      <div className="wrapper-space">
+        <div className="wrapper">
+          {spot.map((element, index) => {
+            if (element.available === true && slot != element.id) {
+              // className="available"
+              return (
+                <div
+                  kay={element.id}
+                  className="available"
+                  onClick={() => getValue(element.id)}
+                >
+                  {/* <img src={slotImg} height={"110px"} width={"90px"} /> */}
+                  {/* <p className="stylyP">Slot:{element.id}</p> */}
+                </div>
+              );
+            } else {
+              return (
+                <div className="Notavailable">
+                  {/* <p className="stylyP">Slot:{element.id}</p> */}
+                  <img
+                    src={car}
+                    className="carSlot"
+                    height={"110px"}
+                    width={"90px"}
+                  />
+                </div>
+              );
+            }
+          })}
         </div>
-    )
+      </div>
+      {slot?
+      <button className="button-go" onClick={go}>
+        booking
+      </button>:""}
+      <div></div>
+    </div>
+  );
 }
 
-export default Spot
+export default Spot;

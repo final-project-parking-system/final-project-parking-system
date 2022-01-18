@@ -30,7 +30,6 @@ public class Spot {
     }
 
     public Boolean hasTickets(){
-        System.out.println("size >>>>"+ this.getId() + ":" +this.tickets.size());
         return this.tickets.size() != 0;
     }
     public Long getId() {

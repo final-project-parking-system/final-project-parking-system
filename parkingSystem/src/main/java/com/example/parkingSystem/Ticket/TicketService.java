@@ -44,8 +44,6 @@ public class TicketService {
 
 //create ticket with dates and  price
     public Ticket addTicket(String userId , String spotId ,String startDate,String endDate ){
-        System.out.println(userId+" "+spotId+" "+startDate+" "+endDate);
-        System.out.println(userId);
         Ticket ticket=new Ticket();
         Long spot_id = Long.parseLong(spotId);
         Long user_id = Long.parseLong(userId);
@@ -54,17 +52,14 @@ public class TicketService {
         int daysdiff = 0;
         User user =userRepository.findById(user_id).orElse(null);
         Spot spot =spotRepository.findById(spot_id).orElse(null);
-        Long diff = ChronoUnit.DAYS.between(end_day, start_day);
-        long diffDays = diff / (24 * 60 * 60 * 1000) + 1;
-        daysdiff = (int) diffDays*24;
-        System.out.println(daysdiff);
+        Long diff = ChronoUnit.DAYS.between(start_day,end_day );
+        daysdiff = (int) (diff*24);
         ticket.setStartTime(start_day);
         ticket.setEndTime(end_day);
         ticket.setPrice(daysdiff);
         ticket.setStatus("waiting");
         ticket.setSpot(spot);
         ticket.setUser(user);
-        System.out.println(ticket);
 //        emailSenderService.sendSimpleEmail(user.getEmail(),"slot has been booked successfully on date"+ticket.getStartTime(),"Parking teem ");
         return ticketRepository.save(ticket);
 

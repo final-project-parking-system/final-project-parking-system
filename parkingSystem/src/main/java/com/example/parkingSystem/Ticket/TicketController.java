@@ -24,19 +24,16 @@ public class TicketController {
 
     @PostMapping("/{user_id}/{spot_id}/{startDate}/{endDate}")
     public Ticket addTicket(@PathVariable String user_id ,@PathVariable String spot_id ,@PathVariable String startDate ,@PathVariable String endDate ){
-        System.out.println("i'm hear ");
         return ticketService.addTicket(user_id,spot_id,startDate,endDate);
     }
 
     @PutMapping("/{user_id}/{status}/{startDate}/{endDate}")
     public void entryConfirmation(@PathVariable String user_id ,@PathVariable String status ,@PathVariable String startDate ,@PathVariable String endDate ){
-        System.out.println("hi");
         ticketService.entryConfirmation(user_id,status,startDate,endDate);
     }
 
     @GetMapping
     public void deleteBookingAutomatically(){
-        System.out.println("hi");
          ticketService.deleteBookingAutomatically();
     }
 

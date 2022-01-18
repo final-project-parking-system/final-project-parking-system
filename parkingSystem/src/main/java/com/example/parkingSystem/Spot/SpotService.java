@@ -56,11 +56,31 @@ public class SpotService {
     }
 
     Boolean dateWithinTicketDate(Ticket t, LocalDate startDay , LocalDate endDay) throws ParseException {
-        return !(t.getStartTime().isBefore(startDay)
-                && (t.getStartTime().isBefore(endDay))
-                || (t.getEndTime().isAfter(startDay)
-                && t.getEndTime().isAfter(endDay))
-                || t.getStatus().equals("cancelled"));
+        return (
+
+                (startDay.isAfter(t.getStartTime()) || startDay.isEqual(t.getStartTime())
+                        && startDay.isBefore(t.getEndTime()) || startDay.isEqual((t.getEndTime())))
+                ||
+                (endDay.isAfter(t.getStartTime()) || endDay.isEqual(t.getStartTime())
+                        && endDay.isBefore(t.getEndTime()) || endDay.isEqual(t.getEndTime()))
+                ||
+                (startDay.isBefore(t.getStartTime()) && endDay.isAfter(t.getEndTime()))
+        );
+
+
+//        !((!(startDay.isAfter(t.getStartTime()) && startDay.isBefore(t.getEndTime())))
+//                &&
+//                (!(endDay.isAfter(t.getStartTime()) && endDay.isBefore(t.getEndTime())))
+//                &&
+//                (!(startDay.isBefore(t.getStartTime()) && endDay.isAfter(t.getEndTime()))));
+
+
+
+//                !(t.getStartTime().isBefore(startDay)
+//                && (t.getStartTime().isBefore(endDay))
+//                || (t.getEndTime().isAfter(startDay)
+//                && t.getEndTime().isAfter(endDay))
+//                || t.getStatus().equals("cancelled"));
     }
 
     public Spot addSpot(Spot spot) {

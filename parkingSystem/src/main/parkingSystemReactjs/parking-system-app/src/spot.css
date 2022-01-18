@@ -1,0 +1,161 @@
+
+.contener {
+    background-image: url('./image/parking.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    height:640px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
+
+::-webkit-datetime-edit { padding: 1em; }
+::-webkit-datetime-edit-fields-wrapper { background: #1b010100;font-size: 22px; }
+::-webkit-datetime-edit-text { color: black; padding: 0 0.3em; }
+::-webkit-datetime-edit-month-field { color: black; }
+::-webkit-datetime-edit-day-field { color: black; }
+::-webkit-datetime-edit-year-field { color: black; }
+/* ::-webkit-inner-spin-button { display: block; } */
+::-webkit-calendar-picker-indicator { background-image: url(https://cdn2.iconfinder.com/data/icons/productivity-at-work/256/Working_Schedule-512.png);background-size: 22px;margin-right: 12px; }
+
+.inputStyleInSpot{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    background-color: rgba(204, 204, 204, 0.466)!important;
+    margin-left: 20%;
+    margin-right: 14%;
+    margin-top: 2%;
+    margin-bottom: 2%!important;
+    gap: 10px;
+    border-radius: 30px!important;
+    height: 105px;
+
+  }
+  .dateRange{
+    margin: 10%;
+    margin-left: 8%;
+    margin-bottom: 20%;
+    /* border-radius: 9px!important; */
+    border-width:0px;
+    border:none;
+    width: 240px;
+    background-color:  #dfdfdfcc    
+  }
+  .wrapper-space{
+    /* margin-top: 10%; */
+    margin-left: 10%;
+    margin-right: 10%;
+    /* margin-bottom: 1%; */
+    padding: 0%;
+    border: 0%;
+    /* background-color: #33407733; */
+  
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr 1fr);
+    gap: 15px;
+  }
+
+  .button-45 {
+    align-items: center;
+    background-color: #acd1f2e0;
+    border: 1px solid #DFDFDF;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    justify-content: center;
+    line-height: 28px;
+    max-width: 100%;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: all .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 10%;
+    height: 32%;
+    margin-left: 10%;
+    margin-top: 11%;
+  }
+  
+  .button-45:active,
+  .button-45:hover {
+    outline: 0;
+  }
+  
+  .button-45:hover {
+    background-color: #F2F2E4;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+  
+  @media (min-width: 768px) {
+    .button-45 {
+      font-size: 20px;
+      min-width: 200px;
+      padding: 14px 16px;
+    }
+  }
+  .button-go{
+    align-items: center;
+    background-color: #acd1f2e0;
+    border: 1px solid #DFDFDF;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: center;
+    line-height: 28px;
+    max-width: 100%;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: all .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 10%;
+    height: 50%;
+    margin-left: 43%;
+    margin-top: 2%;
+  }
+  .button-go:active,
+  .button-go:hover {
+    outline: 0;
+  }
+  
+  .button-go:hover {
+    background-color: #F2F2E4;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+  
+  @media (min-width: 768px) {
+    .button-go {
+      font-size: 20px;
+      min-width: 200px;
+      padding: 14px 16px;
+    }
+  }
+  .available{
+    height:120px;
+    width: 90px;
+    background-color: rgba(3, 43, 3, 0.308);
+    border-radius: 10px;
+  }
+  .Notavailable{
+    height:120px;
+    width: 90px;
+    background-color: rgba(230, 14, 25, 0.315);
+    border-radius: 10px;
+
+  }
+  .carSlot{
+      margin: 2%;
+  }
