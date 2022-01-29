@@ -2,8 +2,9 @@ package com.example.parkingSystem.Ticket;
 
 import com.example.parkingSystem.Spot.Spot;
 import com.example.parkingSystem.User.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -14,31 +15,34 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Date startTime;
-    private Date endTime;
-    private String states;
+    private LocalDate startTime;
+    private LocalDate  endTime;
+    private String status;
     private double price;
-    private boolean waiting ;
+    private boolean waiting ;//extra thing ...
 
-    @ManyToOne (fetch = FetchType.LAZY,optional = false)
+    @ManyToOne (fetch = FetchType.EAGER,optional = false)
+    @JsonIgnoreProperties("tickets")
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    private User user ;
-    @ManyToOne (fetch = FetchType.LAZY,optional = false)
+    private User user;
+
+    @ManyToOne (fetch = FetchType.EAGER,optional = false)
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     private Spot spot;
 
     public Ticket() {
     }
 
-    public Ticket(long id, Date startTime, Date endTime, String states, double price, boolean waiting, User user, Spot spot) {
+    public Ticket(long id, LocalDate startTime, LocalDate endTime, String status, double price, boolean waiting, Spot spot ,User user) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.states = states;
+        this.status = status;
         this.price = price;
         this.waiting = waiting;
-        this.user = user;
         this.spot = spot;
+        this.user = user;
+
     }
 
     public long getId() {
@@ -49,19 +53,27 @@ public class Ticket {
         this.id = id;
     }
 
-    public Date getStartTime() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 
@@ -73,20 +85,12 @@ public class Ticket {
         this.price = price;
     }
 
-    public User getUser() {
-        return user;
+    public String getStatus() {
+        return status;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getStates() {
-        return states;
-    }
-
-    public void setStates(String states) {
-        this.states = states;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean isWaiting() {
@@ -111,11 +115,11 @@ public class Ticket {
                 "id=" + id +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", states='" + states + '\'' +
+                ", status='" + status + '\'' +
                 ", price=" + price +
                 ", waiting=" + waiting +
-                ", user=" + user +
                 ", spot=" + spot +
+                ", user=" + user +
                 '}';
     }
 }

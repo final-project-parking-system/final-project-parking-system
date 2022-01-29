@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long>{
-    @Query(value ="select ticket.* from ticket  left join users on ticket.user_id = users.id where users.phone =?1",nativeQuery = true)
-    public Ticket findTicketByPhone_num(String phone_num);
-
+    @Query(value ="select ticket.* from ticket join users on users.id = ticket.user_id and users.phone = ?1 ",nativeQuery = true)
+    Ticket findTicketByPhone_num(Long phone_num);
 }

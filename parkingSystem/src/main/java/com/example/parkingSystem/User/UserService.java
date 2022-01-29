@@ -1,80 +1,65 @@
 package com.example.parkingSystem.User;
 
 
-import com.example.parkingSystem.Email.EmailSenderService;
-import com.example.parkingSystem.Parking.ParkingController;
-import com.example.parkingSystem.Spot.Spot;
-import com.example.parkingSystem.Spot.SpotRepository;
-import com.example.parkingSystem.Spot.SpotController;
-import com.example.parkingSystem.Ticket.TicketController;
-import com.example.parkingSystem.Ticket.TicketRepository;
+import com.example.parkingSystem.Role.Role;
+import com.example.parkingSystem.Role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
-public class UserService {
-    private final EmailSenderService emailSenderService;
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final TicketController ticketController;
-    private final SpotRepository spotRepository;
-    private final SpotController spotController;
-    private final ParkingController parkingController;
-    private final TicketRepository ticketRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(EmailSenderService emailSenderService, UserRepository userRepository, TicketController ticketController, SpotRepository spotRepository, SpotController spotController, ParkingController parkingController, TicketRepository ticketRepository) {
-        this.emailSenderService = emailSenderService;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.ticketController = ticketController;
-        this.spotRepository = spotRepository;
-        this.spotController = spotController;
-        this.parkingController = parkingController;
-        this.ticketRepository = ticketRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+       User user =userRepository.findByEmail(email);
+       if (user==null){
+           throw new UsernameNotFoundException("User not found in the database");
+       }
+        Collection<SimpleGrantedAuthority>authorities =new ArrayList<>();
+       user.getRoles().forEach(role -> {
+           authorities.add(new SimpleGrantedAuthority(role.getName()));
+       });
+       return  new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),authorities);
+    }
 
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public User getUser(String email) {
+    public User getUserByEmail(User user) {
+        String email=user.getEmail();
         return userRepository.findByEmail(email);
     }
 
-
-
-
-//    public void registerByAdmin(User user ,String slotType) {
-//        Spot spot = spotController.getAvailableSpot(slotType);
-//        System.out.println(spot.getId());
-//            userRepository.save(user);
-//            userRepository.insertSpotinUser(user.getId(),spot.getId());
-//            spotController.updateTaking(spot);
-//            ticketController.addTicket(user);
-//            emailSenderService.sendSimpleEmail(user.getEmail(),"floor name"+spot.getParking().getName(), "you");
-//
-//    }
-    public User registerByUser(User user) {
-        System.out.println(user.toString());
-            return userRepository.save(user);
+    public User registerByUser(Form form) {
+        User user= form.getUser();
+        if (userRepository.findByEmail(user.getEmail())==null || userRepository.findByPhone(user.getPhone())==null){
+        Long role_id = form.getRole_id();
+        Role role = roleRepository.findById(role_id).orElse(null);
+        user.getRoles().add(role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);}
+        else return null;
          }
-
-     public void selectSpot(String userid,String spotid)   {
-         Long user_id = Long.parseLong(userid);
-         Long spot_id = Long.parseLong(spotid);
-         Spot spot = spotRepository.getById(spot_id);
-         User user=userRepository.getById(user_id);
-         userRepository.insertSpotinUser(user_id,spot_id);
-         spotController.updateTaking(spot);
-//         ticketController.addTicket(user,spot);
-         emailSenderService.sendSimpleEmail(
-                 user.getEmail(),
-                 "Parking has been booked successfully ",
-                 user.getfName()+" , We parking System team ");
-
-     }
-
 
     public User logInUser(User data){
         User user= userRepository.findByEmail(data.getEmail());
@@ -83,29 +68,20 @@ public class UserService {
         }else
             return null ;
     }
-
-    public void deleteUserSpot(String userid,String spotid) {//تصير الحاله في التكت consel
-        Long user_id = Long.parseLong(userid);
-        Long spot_id = Long.parseLong(spotid);
-        Spot spot = spotRepository.getById(spot_id);
-        User user=userRepository.getById(user_id);
-         userRepository.deleteBySpotOnUser(user_id,spot_id);
-        spotController.updateTaking(spot);
-        emailSenderService.sendSimpleEmail(
-                user.getEmail(),
-                "Parking has been unbooked successfully ",
-                user.getfName()+" , We parking System team ");
-    }
-
-
-    public void updateUser(User data) {
-        User user =new User();
-        user.setCarModel(data.getCarModel());
-        user.setCarName(data.getCarName());
-        user.setEmail(data.getEmail());
-        user.setfName(data.getfName());
-        user.setfName(data.getfName());
-        user.setPassword(data.getPassword());
-        user.setPhone(data.getPhone());
+    public User updateUser(String id, User data) {
+        Long user_id =Long.parseLong(id);
+        User user= userRepository.findById(user_id).orElse(null);
+        if (userRepository.findByEmail(user.getEmail())==null || userRepository.findByPhone(user.getPhone())==null){
+            user.setCarModel(data.getCarModel());
+            user.setCarName(data.getCarName());
+            user.setEmail(data.getEmail());
+            user.setfName(data.getfName());
+            user.setfName(data.getfName());
+            user.setPassword(data.getPassword());
+            user.setPhone(data.getPhone());
+            return userRepository.save(user);}
+        else{
+            return null;
+        }
     }
 }
