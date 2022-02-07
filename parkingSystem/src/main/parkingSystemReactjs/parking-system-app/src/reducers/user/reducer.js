@@ -23,6 +23,7 @@ const userReducer = (state = initialState, { type, payload }) => {
       };
     case "REMOVE_USER":
       localStorage.removeItem("user");
+      console.log("reducer")
       return {
         user: {},
         token: undefined

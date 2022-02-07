@@ -1,0 +1,90 @@
+
+.contener {
+    background-image: url('../image/parking.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    height:570px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+  .card {
+    display: grid;
+    grid-template-rows: 1fr;
+    background-color: rgba(204, 204, 204, 0.466)!important;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 50%;
+    height:59%;
+    margin-left: 25%; 
+    margin-top: 90px;
+    margin-bottom: 30%;
+    border-radius: 10px!important;
+  
+  }
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  .button-login {
+    align-items: center;
+    background-color: rgba(240, 240, 240, 0.26);
+    border: 1px solid #DFDFDF;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    justify-content: center;
+    line-height: 28px;
+    max-width: 100%;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: all .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 60%;
+    margin-left: 23%;
+    font-size: xx-large;
+    font-weight: 500;
+  }
+  
+  .button-login:active,
+  .button-login:hover {
+    outline: 0;
+  }
+  
+  .button-login:hover {
+    background-color: #F2F2E4;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+  
+  @media (min-width: 768px) {
+    .button-46 {
+      font-size: 20px;
+      min-width: 200px;
+      padding: 14px 16px;
+    }
+  }
+  
+  .inputStyleInLogin{
+    background-color: rgba(204, 204, 204, 0.466)!important;
+    margin-left: 20%;
+    margin-right: 14%;
+    margin-bottom: 2%!important;
+    border-radius: 30px!important;
+    height: 70px;
+    color: #184266;
+    padding: 20px;
+  }
+.h2Style{
+    padding: 20px;
+    font-weight: bold;
+}
+.fontStyle{
+    font-size: 33px;
+    color: #184266;
+    font-weight:bold;
+
+}

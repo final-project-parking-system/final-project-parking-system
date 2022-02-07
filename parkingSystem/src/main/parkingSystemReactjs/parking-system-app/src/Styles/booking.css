@@ -1,0 +1,87 @@
+
+.contaner-booking {
+    background-image: url('../image/parking.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* width: 106.6pc; */
+    height: 100%; 
+    margin-top: 0%!important;
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
+  .button-booking{
+    align-items: center;
+    background-color: #acd1f2e0;
+    border: 1px solid #DFDFDF;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: center;
+    line-height: 28px;
+    max-width: 100%;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: all .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 10%;
+    height: 55px;
+    margin-left: 43%;
+    margin-top: 2%;
+  }
+  .button-booking:active,
+  .button-booking:hover {
+    outline: 0;
+  }
+  
+  .button-booking:hover {
+    background-color: #F2F2E4;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+  
+  @media (min-width: 768px) {
+    .button-booking {
+      font-size: 20px;
+      min-width: 200px;
+      padding: 14px 16px;
+    }
+  }
+
+  .card-booking {
+    display: grid;
+    grid-template-rows: 1fr;
+    background-color: rgba(204, 204, 204, 0.466);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 50%;
+    height:88%;
+    margin-left: 25%; 
+    margin-top: 90px;
+    border-radius: 10px;
+  }
+  h1{
+      padding-top:40px;
+      color: #1d486e;
+      font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  }
+
+  hr{
+    border: 10px solid #1d486e;
+  }
+  h2{
+      color: #1d486e;
+  }
+  p{
+      color: #000000;
+      font-size: 22px;
+      background-color:#f2f2e4ad ;
+      font-weight: bold;
+      padding-bottom: 10px;
+  }

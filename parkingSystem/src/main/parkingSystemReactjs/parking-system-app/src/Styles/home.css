@@ -1,6 +1,6 @@
 
 .contener {
-    background-image: url('./image/parking.jpg');
+    background-image: url('../image/parking.jpg');
     background-repeat: no-repeat;
     background-size:cover;
     height:570px;

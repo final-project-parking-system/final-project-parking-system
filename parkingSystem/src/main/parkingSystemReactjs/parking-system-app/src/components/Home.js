@@ -2,9 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import "../home.css"
+import "../Styles/home.css"
 
-function Home1() {
+function Home() {
   const navigate = useNavigate();
   const today = new Date().toJSON().split("T")[0];
   const [startDateInParams, setStart] = useState(today);
@@ -37,4 +37,4 @@ function Home1() {
   );
 }
 
-export default Home1;
+export default Home;

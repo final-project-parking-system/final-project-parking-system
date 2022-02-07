@@ -2,11 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
-import Booking from "./Booking";
-import slotImg from "../image/avarbile.png";
 import car from "../image/car.png";
 import Navbar from "./Navbar";
-import "../spot.css";
+import "../Styles/spot.css";
+import Swal from 'sweetalert2'
 
 function Spot() {
   const navigate = useNavigate();
@@ -24,6 +23,14 @@ function Spot() {
   const handleChangeEndDate = (e) => {
     setEnd(e.target.value);
   };
+  const errorAlart = () =>{
+    Swal.fire({
+      title: 'Error!',
+      text: 'Do you want to continue',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+  }
   const send = () => {
     axios
       .get(`http://localhost:8080/spot/${startDate}/${endDate}/`)
@@ -89,13 +96,14 @@ function Spot() {
             } else {
               return (
                 <div className="Notavailable">
-                  {/* <p className="stylyP">Slot:{element.id}</p> */}
                   <img
                     src={car}
                     className="carSlot"
                     height={"110px"}
                     width={"90px"}
+                    onClick={errorAlart}
                   />
+       
                 </div>
               );
             }
@@ -105,7 +113,8 @@ function Spot() {
       {slot?
       <button className="button-go" onClick={go}>
         booking
-      </button>:""}
+      </button>:
+      ""}
       <div></div>
     </div>
   );

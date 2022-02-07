@@ -6,6 +6,7 @@ import Home from "./components/Home"
 import Spot  from './components/Spot';
 import Booking from './components/Booking';
 import Navbar from './components/Navbar';
+import Register from './components/Register';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
             <Route path="/home" element={<Home/>} />
             <Route exact path="/spot/:startDateInParams/:endDateInParams" element={<Spot/>} />
             <Route path="/login" element={<Login/>} />
-            <Route path="/sign-up" element={<SignUp/>} />
+            <Route path="/sign-up" element={<Register/>} />
             <Route exact path="/Booking/:slot/:startDate/:endDate" element={<Booking/>} />
           </Routes >
         </div>
